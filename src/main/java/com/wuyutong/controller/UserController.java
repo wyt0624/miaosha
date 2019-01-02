@@ -1,5 +1,6 @@
 package com.wuyutong.controller;
 
+import com.alibaba.druid.util.StringUtils;
 import com.wuyutong.controller.viewobject.UserVO;
 import com.wuyutong.error.BusinessException;
 import com.wuyutong.error.EmBusinessError;
@@ -19,6 +20,7 @@ import java.util.Random;
 
 @Controller("user")
 @RequestMapping("/user")
+@CrossOrigin
 public class UserController extends BaseController{
 
     @Autowired
@@ -28,7 +30,19 @@ public class UserController extends BaseController{
     @Autowired
     private HttpServletRequest httpServletRequest;
 
-    @RequestMapping("/getotp")
+    //用户注册
+    public CommonReturnType register(@RequestParam(name="telephone")String telephone,@RequestParam(name="otpCode")String otpCode,@RequestParam(name="gender")Integer gender,@RequestParam(name="age")Integer age) throws BusinessException {
+        //验证手机号和对应otpcode相符合
+        String inSessionOtpCode = (String) this.httpServletRequest.getSession().getAttribute(telephone);
+        if (!StringUtils.equals(otpCode,inSessionOtpCode)){
+            throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR,"短信验证码不符合");
+        }
+        //userService.register();
+        //return CommonReturnType.create()
+    }
+
+
+    @RequestMapping(value = "/getotp",method = {RequestMethod.POST},consumes = {CONTENT_TYPE_FORMED})
     @ResponseBody
     public CommonReturnType getOtp(@RequestParam(name="telephone")String telephone){
         //需要按照一定的规则生成OTP验证码
