@@ -7,20 +7,25 @@ import com.wuyutong.error.EmBusinessError;
 import com.wuyutong.response.CommonReturnType;
 import com.wuyutong.service.UserService;
 import com.wuyutong.service.model.UserModel;
+import org.apache.tomcat.util.security.MD5Encoder;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import sun.misc.BASE64Encoder;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
 @Controller("user")
 @RequestMapping("/user")
-@CrossOrigin
+@CrossOrigin(allowCredentials="true",allowedHeaders = "*")
 public class UserController extends BaseController{
 
     @Autowired
@@ -31,16 +36,33 @@ public class UserController extends BaseController{
     private HttpServletRequest httpServletRequest;
 
     //用户注册
-    public CommonReturnType register(@RequestParam(name="telephone")String telephone,@RequestParam(name="otpCode")String otpCode,@RequestParam(name="gender")Integer gender,@RequestParam(name="age")Integer age) throws BusinessException {
+     @RequestMapping(value = "/register",method = {RequestMethod.POST},consumes = {CONTENT_TYPE_FORMED})
+     @ResponseBody
+    public CommonReturnType register(@RequestParam(name="telephone")String telephone,@RequestParam(name="otpCode")String otpCode,@RequestParam(name="gender")Integer gender,@RequestParam(name="age")Integer age,@RequestParam(name="name")String name,@RequestParam(name="password")String password) throws BusinessException, UnsupportedEncodingException, NoSuchAlgorithmException {
         //验证手机号和对应otpcode相符合
         String inSessionOtpCode = (String) this.httpServletRequest.getSession().getAttribute(telephone);
         if (!StringUtils.equals(otpCode,inSessionOtpCode)){
             throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR,"短信验证码不符合");
         }
         //userService.register();
-        //return CommonReturnType.create()
+        UserModel userModel = new UserModel();
+        userModel.setName(name);
+        userModel.setGender(new Byte(String.valueOf(gender.intValue())));
+        userModel.setAge(age);
+        userModel.setTelephone(telephone);
+        userModel.setRegisterMode("byTelephone");
+        userModel.setThirdPartyId("1");
+        userModel.setEncrptPassword(this.EncodeByMD5(password));
+        userService.register(userModel);
+        return CommonReturnType.create(null);
     }
 
+    public String EncodeByMD5(String str) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+        MessageDigest md5 = MessageDigest.getInstance("MD5");
+        BASE64Encoder base64 = new BASE64Encoder();
+        String newStr = base64.encode(md5.digest(str.getBytes("utf-8")));
+        return newStr;
+    }
 
     @RequestMapping(value = "/getotp",method = {RequestMethod.POST},consumes = {CONTENT_TYPE_FORMED})
     @ResponseBody

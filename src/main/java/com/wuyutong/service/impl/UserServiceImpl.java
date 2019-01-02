@@ -12,6 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -37,18 +38,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void register(UserModel userModel) throws BusinessException {
         if(userModel == null){
             throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR);
         }
-        if(StringUtils.isNotEmpty(userModel.getName()) || userModel.getGender() == null || userModel.getAge() == null || StringUtils.isEmpty(userModel.getTelephone())){
+        if(StringUtils.isEmpty(userModel.getName()) || StringUtils.isEmpty(userModel.getTelephone())){
             throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR);
         }
-
-
         //实现model -> dataobject方法
-        UserDO userDO = new UserDO();
+        UserDO userDO = convertFromModel(userModel);
         userDOMapper.insertSelective(userDO);
+        userModel.setId(userDO.getId());
         UserPasswordDO userPasswordDO = convertPasswordFromModel(userModel);
         userPasswordDOMapper.insertSelective(userPasswordDO);
         return;
@@ -72,6 +73,7 @@ public class UserServiceImpl implements UserService {
         }
         UserDO userDo = new UserDO();
         BeanUtils.copyProperties(userModel,userDo);
+        return userDo;
     }
 
     public UserModel convertFromDataObject(UserDO userDo, UserPasswordDO userPasswordDO){
