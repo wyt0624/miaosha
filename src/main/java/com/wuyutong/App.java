@@ -19,19 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 @MapperScan("com.wuyutong.dao")
 public class App 
 {
-    @Autowired
-    private UserDOMapper userDOMapper;
-
-
-    @RequestMapping("/")
-    public String home(){
-        UserDO userDO = userDOMapper.selectByPrimaryKey(1);
-        if (userDO == null) {
-            return "用户不存在";
-        } else {
-            return userDO.getName();
-        }
-    }
 
     public static void main( String[] args ){
 

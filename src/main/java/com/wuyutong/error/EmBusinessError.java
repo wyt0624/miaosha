@@ -7,6 +7,7 @@ public enum EmBusinessError implements CommonError {
 
     //10000开头为用户信息相关错误定义
     USER_NOT_EXIST(200001,"用户不存在"),
+    USER_LOGIN_FAIL(200002,"手机号或密码不正确"),
 
     ;
 

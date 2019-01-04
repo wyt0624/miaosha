@@ -25,7 +25,7 @@ import java.util.Random;
 
 @Controller("user")
 @RequestMapping("/user")
-@CrossOrigin(allowCredentials="true",allowedHeaders = "*")
+@CrossOrigin(origins = {"*"},allowCredentials = "true")
 public class UserController extends BaseController{
 
     @Autowired
@@ -34,6 +34,23 @@ public class UserController extends BaseController{
 
     @Autowired
     private HttpServletRequest httpServletRequest;
+
+    //用户登录
+    @RequestMapping(value = "/login",method = {RequestMethod.POST},consumes = {CONTENT_TYPE_FORMED})
+    @ResponseBody
+    public CommonReturnType login(@RequestParam(name="telephone")String telephone,@RequestParam(name="password")String password) throws BusinessException, UnsupportedEncodingException, NoSuchAlgorithmException {
+        if (org.apache.commons.lang3.StringUtils.isEmpty(telephone)|| org.apache.commons.lang3.StringUtils.isEmpty(password)){
+            throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR);
+        }
+        //用户登录服务 校验用户是否合法
+        UserModel userModel = userService.validateLogin(telephone,this.EncodeByMD5(password));
+        //将登陆凭证加入session
+        this.httpServletRequest.getSession().setAttribute("IS_LOGIN",true);
+        this.httpServletRequest.getSession().setAttribute("LOGIN_USER",userModel);
+        return CommonReturnType.create(null);
+    }
+
+
 
     //用户注册
      @RequestMapping(value = "/register",method = {RequestMethod.POST},consumes = {CONTENT_TYPE_FORMED})
