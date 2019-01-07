@@ -2,6 +2,8 @@ package com.wuyutong.dao;
 
 import com.wuyutong.dataobject.ItemDO;
 
+import java.util.List;
+
 public interface ItemDOMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -14,4 +16,6 @@ public interface ItemDOMapper {
     int updateByPrimaryKeySelective(ItemDO record);
 
     int updateByPrimaryKey(ItemDO record);
+
+    List<ItemDO> listItem();
 }
