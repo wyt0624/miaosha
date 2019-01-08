@@ -25,13 +25,13 @@
     delete from item_stock
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.wuyutong.dataobject.ItemStockDO">
+  <insert id="insert" parameterType="com.wuyutong.dataobject.ItemStockDO" useGeneratedKeys="true" keyProperty="id">
     insert into item_stock (id, stock, item_id
       )
     values (#{id,jdbcType=INTEGER}, #{stock,jdbcType=INTEGER}, #{itemId,jdbcType=INTEGER}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.wuyutong.dataobject.ItemStockDO">
+  <insert id="insertSelective" parameterType="com.wuyutong.dataobject.ItemStockDO" useGeneratedKeys="true" keyProperty="id">
     insert into item_stock
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
