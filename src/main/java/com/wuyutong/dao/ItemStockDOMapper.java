@@ -1,6 +1,7 @@
 package com.wuyutong.dao;
 
 import com.wuyutong.dataobject.ItemStockDO;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -18,5 +19,7 @@ public interface ItemStockDOMapper {
     int updateByPrimaryKeySelective(ItemStockDO record);
 
     int updateByPrimaryKey(ItemStockDO record);
+
+    int decreaseStock(@Param("itemId")Integer itemId, @Param("amount")Integer amount);
 
 }
