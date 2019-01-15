@@ -53,7 +53,7 @@ public class ItemController extends BaseController{
      */
     @RequestMapping(value = "/get",method = {RequestMethod.GET})
     @ResponseBody
-    public CommonReturnType getItem(@RequestParam(name = "id")Integer id){
+    public CommonReturnType getItem(@RequestParam(name = "id")Integer id) throws BusinessException {
         ItemModel itemModel = itemService.getItemById(id);
         ItemVO itemVO = convertItemVOFromItemModel(itemModel);
         return CommonReturnType.create(itemVO);
@@ -83,6 +83,15 @@ public class ItemController extends BaseController{
         }
         ItemVO itemVO = new ItemVO();
         BeanUtils.copyProperties(itemModel,itemVO);
+        if (itemModel.getPromoModel() != null) {
+            //有正在进行的秒杀活动
+            itemVO.setPromoStatus(itemModel.getPromoModel().getStatus());
+            itemVO.setPromoId(itemModel.getPromoModel().getId());
+            itemVO.setPromoPrice(itemModel.getPromoModel().getPromoItemPrice());
+            itemVO.setStartDate(itemModel.getPromoModel().getStartTime().toString());
+        } else {
+            itemVO.setPromoStatus(0);
+        }
         return itemVO;
     }
 

@@ -2,12 +2,16 @@ package com.wuyutong.service.impl;
 
 import com.wuyutong.dao.ItemDOMapper;
 import com.wuyutong.dao.ItemStockDOMapper;
+import com.wuyutong.dao.PromoDOMapper;
 import com.wuyutong.dataobject.ItemDO;
 import com.wuyutong.dataobject.ItemStockDO;
+import com.wuyutong.dataobject.PromoDO;
 import com.wuyutong.error.BusinessException;
 import com.wuyutong.error.EmBusinessError;
 import com.wuyutong.service.ItemService;
+import com.wuyutong.service.PromoService;
 import com.wuyutong.service.model.ItemModel;
+import com.wuyutong.service.model.PromoModel;
 import com.wuyutong.validator.ValidationResult;
 import com.wuyutong.validator.ValidatorImpl;
 import org.springframework.beans.BeanUtils;
@@ -31,6 +35,9 @@ public class ItemServiceImpl implements ItemService {
 
     @Autowired
     private ItemStockDOMapper itemStockDOMapper;
+
+    @Autowired
+    private PromoService promoService;
 
     private ItemDO convertItemDOFromItemModel(ItemModel itemModel){
         if(itemModel == null) {
@@ -84,7 +91,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public ItemModel getItemById(Integer id) {
+    public ItemModel getItemById(Integer id) throws BusinessException {
         ItemDO itemDO = itemDOMapper.selectByPrimaryKey(id);
         if (itemDO == null) {
             return null;
@@ -94,6 +101,12 @@ public class ItemServiceImpl implements ItemService {
 
         //将 dataObject转为model'
         ItemModel itemModel = convertModelFromDataObject(itemDO,itemStockDO);
+
+        //获取活动商品信息
+        PromoModel promoModel = promoService.getPromoByItemId(itemModel.getId());
+        if (promoModel != null && promoModel.getStatus().intValue() != 3){
+            itemModel.setPromoModel(promoModel);
+        }
         return itemModel;
     }
 
@@ -109,6 +122,12 @@ public class ItemServiceImpl implements ItemService {
            return false;
        }
 
+    }
+
+    @Override
+    @Transactional
+    public void increaseSales(Integer itemId, Integer amount) throws BusinessException {
+        int increaseSales = itemDOMapper.increaseSales(itemId,amount);
     }
 
     private ItemModel convertModelFromDataObject(ItemDO itemDO,ItemStockDO itemStockDO){

@@ -79,4 +79,5 @@
     set stock = stock - #{amount},
     where item_id = #{itemId} and stock >= #{amount}
   </update>
+  
 </mapper>
