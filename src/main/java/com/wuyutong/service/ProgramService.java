@@ -12,4 +12,10 @@ public interface ProgramService {
 
     //根据省份获取该省所有的程序数
     int getProgramTotal(Integer provinceId);
+
+    //添加程序
+    void addProgram(ProgramDO programDO) throws BusinessException;
+
+    //删除程序
+    void deleteProgram(Integer id) throws BusinessException;
 }

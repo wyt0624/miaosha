@@ -4,6 +4,7 @@ import com.wuyutong.dao.ProgramDOMapper;
 import com.wuyutong.dao.PromoDOMapper;
 import com.wuyutong.dataobject.ProgramDO;
 import com.wuyutong.error.BusinessException;
+import com.wuyutong.error.EmBusinessError;
 import com.wuyutong.service.ProgramService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,6 +36,26 @@ public class ProgramServiceImpl implements ProgramService {
         } catch (Exception e){
             e.printStackTrace();
             return 0;
+        }
+
+    }
+
+    @Override
+    public void addProgram(ProgramDO programDO) throws BusinessException {
+        try {
+            programDOMapper.insertSelective(programDO);
+
+        } catch (Exception e){
+            throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR,"添加失败");
+        }
+    }
+
+    @Override
+    public void deleteProgram(Integer id) throws BusinessException {
+        try {
+            programDOMapper.deleteByPrimaryKey(id);
+        } catch (Exception e){
+            throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR,"删除失败");
         }
 
     }

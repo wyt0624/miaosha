@@ -22,15 +22,42 @@ public class ProgramController extends BaseController {
     private ProgramService programService;
 
     //省份展示
-    @RequestMapping(value = "/getProgram",method = {RequestMethod.GET})
+    @RequestMapping(value = "/getProgram", method = {RequestMethod.GET})
     @ResponseBody
-    public CommonReturnType getProgress(@RequestParam(name = "province_id")Integer provinceId) throws BusinessException {
+    public CommonReturnType getProgress(@RequestParam(name = "province_id") Integer provinceId) throws BusinessException {
         List<ProgramDO> programDOList = new ArrayList<>();
         int programTotal = programService.getProgramTotal(provinceId);
         programDOList = programService.getProgramList(provinceId);
 
-        return CommonReturnType.create(programDOList,0,programTotal);
+        return CommonReturnType.create(programDOList, 0, programTotal);
+    }
+
+    /**
+     * 添加程序
+     */
+    @RequestMapping(value = "/addProgram", method = {RequestMethod.POST})
+    @ResponseBody
+    public CommonReturnType getProgress(@RequestParam(name = "province_id") Integer provinceId, @RequestParam(name = "department") Integer department, @RequestParam(name = "program") String program, @RequestParam(name = "program") String ipAddress) throws BusinessException {
+
+        ProgramDO programDO = new ProgramDO();
+        programDO.setIpAddress(ipAddress);
+        programDO.setProgram(program);
+        programDO.setProvinceId(provinceId);
+        programDO.setType(department);
+
+        programService.addProgram(programDO);
+        return CommonReturnType.create(null);
+    }
 
 
+    /**
+     * 删除程序
+     */
+    @RequestMapping(value = "/deleteProgram", method = {RequestMethod.GET})
+    @ResponseBody
+    public CommonReturnType deleteProgress(@RequestParam(name = "id") Integer id) throws BusinessException {
+
+        programService.deleteProgram(id);
+        return CommonReturnType.create(null);
     }
 }
