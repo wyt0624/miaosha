@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.wuyutong.dao.ItemStockDOMapper">
-  <resultMap id="BaseResultMap" type="com.wuyutong.dataobject.ItemStockDO">
+<mapper namespace="com.surfilter.dao.ItemStockDOMapper">
+  <resultMap id="BaseResultMap" type="com.surfilter.dataobject.ItemStockDO">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="stock" jdbcType="INTEGER" property="stock" />
     <result column="item_id" jdbcType="INTEGER" property="itemId" />
@@ -25,13 +25,13 @@
     delete from item_stock
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.wuyutong.dataobject.ItemStockDO" useGeneratedKeys="true" keyProperty="id">
+  <insert id="insert" parameterType="com.surfilter.dataobject.ItemStockDO" useGeneratedKeys="true" keyProperty="id">
     insert into item_stock (id, stock, item_id
       )
     values (#{id,jdbcType=INTEGER}, #{stock,jdbcType=INTEGER}, #{itemId,jdbcType=INTEGER}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.wuyutong.dataobject.ItemStockDO" useGeneratedKeys="true" keyProperty="id">
+  <insert id="insertSelective" parameterType="com.surfilter.dataobject.ItemStockDO" useGeneratedKeys="true" keyProperty="id">
     insert into item_stock
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -56,7 +56,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.wuyutong.dataobject.ItemStockDO">
+  <update id="updateByPrimaryKeySelective" parameterType="com.surfilter.dataobject.ItemStockDO">
     update item_stock
     <set>
       <if test="stock != null">
@@ -68,7 +68,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.wuyutong.dataobject.ItemStockDO">
+  <update id="updateByPrimaryKey" parameterType="com.surfilter.dataobject.ItemStockDO">
     update item_stock
     set stock = #{stock,jdbcType=INTEGER},
       item_id = #{itemId,jdbcType=INTEGER}

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.wuyutong.dao.OrderDOMapper">
-  <resultMap id="BaseResultMap" type="com.wuyutong.dataobject.OrderDO">
+<mapper namespace="com.surfilter.dao.OrderDOMapper">
+  <resultMap id="BaseResultMap" type="com.surfilter.dataobject.OrderDO">
     <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="user_id" jdbcType="INTEGER" property="userId" />
     <result column="item_id" jdbcType="INTEGER" property="itemId" />
@@ -23,7 +23,7 @@
     delete from order_info
     where id = #{id,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.wuyutong.dataobject.OrderDO">
+  <insert id="insert" parameterType="com.surfilter.dataobject.OrderDO">
     insert into order_info (id, user_id, item_id, promo_id
       item_price, amount, order_price
       )
@@ -31,7 +31,7 @@
       #{itemPrice,jdbcType=DOUBLE}, #{amount,jdbcType=INTEGER}, #{orderPrice,jdbcType=DOUBLE}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.wuyutong.dataobject.OrderDO">
+  <insert id="insertSelective" parameterType="com.surfilter.dataobject.OrderDO">
     insert into order_info
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -80,7 +80,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.wuyutong.dataobject.OrderDO">
+  <update id="updateByPrimaryKeySelective" parameterType="com.surfilter.dataobject.OrderDO">
     update order_info
     <set>
       <if test="userId != null">
@@ -104,7 +104,7 @@
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.wuyutong.dataobject.OrderDO">
+  <update id="updateByPrimaryKey" parameterType="com.surfilter.dataobject.OrderDO">
     update order_info
     set user_id = #{userId,jdbcType=INTEGER},
       item_id = #{itemId,jdbcType=INTEGER},

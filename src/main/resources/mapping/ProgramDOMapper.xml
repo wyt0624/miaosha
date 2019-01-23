@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.wuyutong.dao.ProgramDOMapper">
-  <resultMap id="BaseResultMap" type="com.wuyutong.dataobject.ProgramDO">
+<mapper namespace="com.surfilter.dao.ProgramDOMapper">
+  <resultMap id="BaseResultMap" type="com.surfilter.dataobject.ProgramDO">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="program" jdbcType="VARCHAR" property="program" />
     <result column="province_id" jdbcType="INTEGER" property="provinceId" />
-    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="department" jdbcType="INTEGER" property="department" />
     <result column="ip_address" jdbcType="VARCHAR" property="ipAddress" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, program, province_id, type, ip_address
+    id, program, province_id, department, ip_address
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -33,13 +33,13 @@
     delete from program
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.wuyutong.dataobject.ProgramDO">
+  <insert id="insert" parameterType="com.surfilter.dataobject.ProgramDO">
     insert into program (id, program, province_id, 
-      type)
+      department)
     values (#{id,jdbcType=INTEGER}, #{program,jdbcType=VARCHAR}, #{provinceId,jdbcType=INTEGER}, 
-      #{type,jdbcType=INTEGER})
+      #{department,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.wuyutong.dataobject.ProgramDO">
+  <insert id="insertSelective" parameterType="com.surfilter.dataobject.ProgramDO">
     insert into program
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -51,8 +51,8 @@
       <if test="provinceId != null">
         province_id,
       </if>
-      <if test="type != null">
-        type,
+      <if test="department != null">
+        department,
       </if>
       <if test="ipAddress != null">
         ip_address,
@@ -68,15 +68,15 @@
       <if test="provinceId != null">
         #{provinceId,jdbcType=INTEGER},
       </if>
-      <if test="type != null">
-        #{type,jdbcType=INTEGER},
+      <if test="department != null">
+        #{department,jdbcType=INTEGER},
       </if>
       <if test="ipAddress != null">
         #{ipAddress,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.wuyutong.dataobject.ProgramDO">
+  <update id="updateByPrimaryKeySelective" parameterType="com.surfilter.dataobject.ProgramDO">
     update program
     <set>
       <if test="program != null">
@@ -85,8 +85,8 @@
       <if test="provinceId != null">
         province_id = #{provinceId,jdbcType=INTEGER},
       </if>
-      <if test="type != null">
-        type = #{type,jdbcType=INTEGER},
+      <if test="department != null">
+        department = #{department,jdbcType=INTEGER},
       </if>
       <if test="ipAddress != null">
         ip_address = #{ipAddress,jdbcType=INTEGER},
@@ -94,11 +94,11 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.wuyutong.dataobject.ProgramDO">
+  <update id="updateByPrimaryKey" parameterType="com.surfilter.dataobject.ProgramDO">
     update program
     set program = #{program,jdbcType=VARCHAR},
       province_id = #{provinceId,jdbcType=INTEGER},
-      type = #{type,jdbcType=INTEGER},
+      department = #{department,jdbcType=INTEGER},
       ip_address = #{ipAddress,jdbcType=VARCHAR},
     where id = #{id,jdbcType=INTEGER}
   </update>
