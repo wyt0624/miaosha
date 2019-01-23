@@ -23,11 +23,21 @@
     from program
     where province_id = #{provinceId,jdbcType=INTEGER}
   </select>
+  <select id="selectAllProgram" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from program
+  </select>
   <select id="selectTotalByProvinceId" parameterType="java.lang.Integer" resultType="int">
     select
     count(1)
     from program
     where province_id = #{provinceId,jdbcType=INTEGER}
+  </select>
+  <select id="selectProgramTotal" parameterType="java.lang.Integer" resultType="int">
+    select
+    count(1)
+    from program
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from program

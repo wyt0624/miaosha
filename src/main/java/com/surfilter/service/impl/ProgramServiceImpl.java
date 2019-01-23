@@ -80,6 +80,8 @@ public class ProgramServiceImpl implements ProgramService {
 
     }
 
+
+
     @Override
     public List<ProgramModel> getLogs(String id, String province_id) throws BusinessException, UnknownHostException {
 //        String statementField = "logsType";
@@ -125,6 +127,15 @@ public class ProgramServiceImpl implements ProgramService {
         return programModelList;
 
 
+    }
+
+    @Override
+    public List<ProgramDO> selectAllProgram() {
+        List<ProgramDO> programDOList = programDOMapper.selectAllProgram();
+        if (programDOList == null){
+            return null;
+        }
+        return programDOList;
     }
 
     private ProgramModel convertModelFromDataObject(ProgramDO programDO, ProvinceDO provinceDO){

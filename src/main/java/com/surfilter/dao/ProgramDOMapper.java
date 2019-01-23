@@ -20,4 +20,8 @@ public interface ProgramDOMapper {
     List<ProgramDO> selectByProvinceId(Integer provinceId);
 
     int selectTotalByProvinceId(Integer provinceId);
+
+    int selectProgramTotal();
+
+    List<ProgramDO> selectAllProgram();
 }

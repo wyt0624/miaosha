@@ -21,4 +21,6 @@ public interface ProgramService {
     void deleteProgram(Integer id) throws BusinessException;
 
     List<ProgramModel> getLogs(String id,String province_id) throws BusinessException, UnknownHostException;
+
+    List<ProgramDO> selectAllProgram();
 }
